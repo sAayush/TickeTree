@@ -1,21 +1,21 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv # type: ignore
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 CORS_ALLOW_ALL_ORIGINS = True  # Change in production
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-secret-key")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m0is0t%c*kp1g(29lb1kf+++$+wvc4+$809%2g8w2px34137#j'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -31,6 +31,9 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     "rest_framework",
     "corsheaders"
+    "tickets",
+    "users",
+    "events",
 ]
 
 MIDDLEWARE = [
@@ -72,12 +75,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Tickettree',
-        'USER': 'Postgres',
-        'PASSWORD': 'Pass@123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DATABASE_NAME"),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST", "localhost"),
+        "PORT": os.getenv("DATABASE_PORT", "5432"),
     }
 }
 
