@@ -10,8 +10,6 @@ CORS_ALLOW_ALL_ORIGINS = True  # Change in production
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-secret-key")
 
-SECRET_KEY = ''
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
@@ -29,11 +27,11 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS += [
-    "rest_framework",
-    "corsheaders"
-    "tickets",
-    "users",
-    "events",
+    'rest_framework',
+    'corsheaders',
+    'tickets',
+    'users',
+    'events',
 ]
 
 MIDDLEWARE = [
@@ -79,8 +77,8 @@ DATABASES = {
         "NAME": os.getenv("DATABASE_NAME"),
         "USER": os.getenv("DATABASE_USER"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-        "HOST": os.getenv("DATABASE_HOST", "localhost"),
-        "PORT": os.getenv("DATABASE_PORT", "5432"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT"),
     }
 }
 
