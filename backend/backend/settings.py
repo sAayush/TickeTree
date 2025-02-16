@@ -30,7 +30,7 @@ INSTALLED_APPS += [
     'rest_framework',
     'corsheaders',
     'tickets',
-    'users',
+    'accounts',
     'events',
 ]
 
@@ -46,6 +46,11 @@ MIDDLEWARE = [
 
 MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+LINKEDIN_REDIRECT_URI = "http://localhost:8000/accounts/linkedin/callback"
+LINKEDIN_CLIENT_ID = os.environ.get('LINKEDIN_CLIENT_ID')
+LINKEDIN_CLIENT_SECRET = os.environ.get('LINKEDIN_CLIENT_SECRET')
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -67,10 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databasesz
-
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
@@ -81,10 +82,6 @@ DATABASES = {
         "PORT": os.getenv("DATABASE_PORT"),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -101,10 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -113,13 +106,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
