@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, HostProfile
+from .models import UserProfile, HostProfile
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'username', 'get_user_type', 'get_is_verified', 'is_active', 'is_staff')
@@ -28,5 +28,5 @@ class CustomUserAdmin(UserAdmin):
     get_is_verified.boolean = True 
     get_is_verified.short_description = "Verified"
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(UserProfile, CustomUserAdmin)
 admin.site.register(HostProfile)

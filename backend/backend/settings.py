@@ -1,6 +1,7 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv # type: ignore
+from datetime import timedelta
 
 load_dotenv()
 
@@ -28,6 +29,8 @@ INSTALLED_APPS = [
 
 INSTALLED_APPS += [
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
     'corsheaders',
     'tickets',
     'accounts',
@@ -46,13 +49,39 @@ MIDDLEWARE = [
 
 MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.UserProfile'
 
-LINKEDIN_REDIRECT_URI = "http://localhost:8000/accounts/linkedin/callback"
-LINKEDIN_CLIENT_ID = os.environ.get('LINKEDIN_CLIENT_ID')
-LINKEDIN_CLIENT_SECRET = os.environ.get('LINKEDIN_CLIENT_SECRET')
+# LINKEDIN_REDIRECT_URI = "http://localhost:8000/accounts/linkedin/callback"
+# LINKEDIN_CLIENT_ID = os.environ.get('LINKEDIN_CLIENT_ID')
+# LINKEDIN_CLIENT_SECRET = os.environ.get('LINKEDIN_CLIENT_SECRET')
 
 ROOT_URLCONF = 'backend.urls'
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
 
 TEMPLATES = [
     {
