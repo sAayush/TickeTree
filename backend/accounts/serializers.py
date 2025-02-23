@@ -1,12 +1,18 @@
 from rest_framework import serializers
-from .models import CustomUser, HostProfile
+from django.contrib.auth import get_user_model
 
-class UserPostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ('id', 'email', 'username', 'user_type', 'password')
+User = get_user_model()
 
-class HostProfilePostSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = HostProfile
-        fields = '__all__'
+        model = User
+        fields = ('id', 'email', 'username', 'user_type')
+        read_only_fields = ('user_type',)
+
+class RegisterUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password')
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
