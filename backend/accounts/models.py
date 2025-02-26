@@ -1,8 +1,8 @@
 from django.db import models
-from .managers import CustomUserManager
+from .managers import UserProfileManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):    
+class UserProfile(AbstractBaseUser, PermissionsMixin):    
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
@@ -13,7 +13,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_verified = models.BooleanField(default=False)
     user_type = models.CharField(max_length=30)
     
-    objects = CustomUserManager()
+    objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'username']
@@ -22,7 +22,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.username
     
 class HostProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="host_profile")
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name="host_profile")
     organization_name = models.CharField(max_length=255)
     address = models.TextField()
     contact_number = models.CharField(max_length=15)
