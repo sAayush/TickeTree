@@ -5,6 +5,7 @@ import { RiMovie2Fill } from "react-icons/ri";
 import { SiEventbrite } from "react-icons/si";
 import { NavLink } from "react-router-dom";
 import Select from "react-select";
+import Login from "../login_rgister/login"
 import "./style.scss";
 import cities from "../../cities/cities-name-list.json";
 
@@ -21,6 +22,7 @@ const Navbar = () => {
   const [selectedState, setSelectedState] = useState("");
   const [popUp, setpopup] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [loginPage, setLoginPage] = useState(false)
   useEffect(() => {
     const savedState = localStorage.getItem("userState");
     if (savedState) {
@@ -77,20 +79,33 @@ const Navbar = () => {
           </NavLink>
         ))}
       </div>
+      {/* login button */}
+      {isLogin ? (
+        <div className="nav-bar-login" to="/logout">
+          Logout
+        </div>
+      ) : (
+        <div className="nav-bar-login" onClick={()=>setLoginPage(true)}>
+          Login
+        </div>
+      )}
+      {/* select popup */}
       {popUp && (
         <div className="popup-overlay" onClick={() => setpopup(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Select Your State</h3>
+            <h3>Select Your City</h3>
             <Select
               className="nav-popup-search"
               options={cityOptions} // Corrected data format
               value={selectedState} // Updated value binding
               onChange={handleStateSelection}
-              placeholder="Search and select your city..."
+              placeholder="Search "
             />
           </div>
         </div>
       )}
+      {/* login page */}
+      {loginPage && <Login close = {()=> setLoginPage(false)}/> }
     </div>
   );
 };

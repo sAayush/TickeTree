@@ -19,6 +19,7 @@
         align-items: center;
         font-size: 1.5rem;
         gap: 10px;
+        
 
         .nav-logo-name {
             text-decoration: none;
@@ -59,10 +60,8 @@
     }
 
     .navbar {
-        display: flex;
-        flex-direction: row;
+        margin-right: 3rem;
         align-items: center;
-        gap: 20px;
 
         .navLink {
             text-decoration: none;
@@ -115,6 +114,20 @@
     }
 }
 
+// / login/
+.nav-bar-login{
+    text-decoration: none;
+    color: black;
+    position: fixed;
+    top: 1.3rem;
+    right: .5rem;
+    cursor: pointer;
+    &:hover{
+        color: #fff;
+    }
+
+}
+
 /* 🔹 Responsive Styles */
 @media (max-width: 1024px) {
     .nav {
@@ -131,7 +144,7 @@
     }
 
     .nav-search {
-        // flex-direction: column;
+        
         width: 100%;
         margin-top: 5px;
 
@@ -141,6 +154,7 @@
     }
 
     .navbar {
+        margin-top: 15px;
         justify-content: center;
         gap: 10px;
         font-size: 0.9rem;
@@ -185,6 +199,7 @@
     .logo {
         align-items: center;
         font-size: 1.2rem;
+        width: 90%;
     }
 
     .navbar {
