@@ -7,14 +7,45 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-CORS_ALLOW_ALL_ORIGINS = True  # Change in production
+CORS_ALLOW_ALL_ORIGINS = True  # Only for development! Change this in production
+
+# For production, use this instead:
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React default port
+    "http://127.0.0.1:3000",
+    "https://your-production-domain.com",
+]
+
+# Additional CORS settings if needed
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Add your domain in production
 
 # Application definition
 

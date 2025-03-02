@@ -14,7 +14,7 @@ User = get_user_model()
 
 class LoginUserView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
-        try:
+        try: 
             response = super().post(request, *args, **kwargs)
             if response.status_code == 200:
                 # Get user details
