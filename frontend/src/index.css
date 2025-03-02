@@ -1,0 +1,13 @@
+@import "@fontsource/poppins"; /* Default weight */
+@import "@fontsource/poppins/400.css"; /* Normal */
+@import "@fontsource/poppins/600.css"; /* Semi-bold */
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  /* background-color: #e8e8e8; */
+}
+body{
+  background-color: #faf6f6;
+}

@@ -1,5 +1,5 @@
-function event(){
+function Event(){
     return (
         <div className="event">event</div>
     );
-}export default event;
+}export default Event;

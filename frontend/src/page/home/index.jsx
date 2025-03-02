@@ -1,5 +1,9 @@
-function home(){
+function Home(){
     return (
-        <div className="home">home</div>
+        <div className="home-page">
+            <div className="home-page-slider">
+                
+            </div>
+        </div>
     );
-}export default home;
+}export default Home;

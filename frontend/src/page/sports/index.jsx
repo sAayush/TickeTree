@@ -1,5 +1,5 @@
-function sports(){
+function Sports(){
     return (
         <div className="sports">sports</div>
     );
-}export default sports;
+}export default Sports;

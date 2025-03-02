@@ -1,0 +1,207 @@
+.nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #67a511;
+    z-index: 999; // Ensures navbar stays on top
+    .nav-bar-mobile{
+        display: flex;
+        justify-content: space-between;
+        width: 65%;
+    }
+    .logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        gap: 10px;
+
+        .nav-logo-name {
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+
+            .nav-logo-img {
+                width: 40px;
+            }
+        }
+    }
+
+    .nav-search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+
+        input {
+            width: 100%;
+            max-width: 30rem;
+            height: 1.5rem;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .nav-location {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            gap: 5px;
+        }
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+
+        .navLink {
+            text-decoration: none;
+            color: black;
+            padding: 5px 10px;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #fff;
+            }
+
+            &.active {
+                font-weight: bold;
+                color: #fff;
+                border-bottom: 2px solid #fff;
+            }
+        }
+    }
+}
+
+/* Popup Styling */
+.popup-overlay {
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 105vh;
+    width: 105vw;
+    display: flex;
+    justify-content: center;
+
+    .popup-content {
+        width: 50%;
+        // max-width: 500px;
+        height: 5rem;
+        margin-top: 5rem;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .nav-popup-search {
+            width: 90%;
+        }
+    }
+}
+
+/* 🔹 Responsive Styles */
+@media (max-width: 1024px) {
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+        width: 100%;
+        .nav-bar-mobile{
+            width: 100% !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .nav-search {
+        // flex-direction: column;
+        width: 100%;
+        margin-top: 5px;
+
+        input {
+            width: 90%;
+        }
+    }
+
+    .navbar {
+        justify-content: center;
+        gap: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav {
+        // flex-direction: column;
+        padding: 5px;
+    }
+
+    .nav-search {
+        width: 100%;
+        padding: 5px 0;
+
+        input {
+            width: 60% !important;
+            // max-width: 100%;
+        }
+        
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 0.9rem;
+        gap: 10px;
+    }
+
+    .popup-content {
+        width: 90%;
+        max-width: 400px;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-bar-mobile{
+        flex-direction: column;
+    }
+    .logo {
+        align-items: center;
+        font-size: 1.2rem;
+    }
+
+    .navbar {
+        gap: 0 !important;
+        text-align: center;
+        font-size: .8rem;
+    }
+
+    .nav-search {
+        font-size: .8rem;
+        // flex-direction: column;
+        gap: 5px;
+    }
+
+    .popup-content {
+        width: 60% !important;
+        max-width: 400px;
+        padding: 1rem;
+    }
+}

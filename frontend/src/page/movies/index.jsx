@@ -1,5 +1,5 @@
-function movies(){
+function Movies(){
     return (
         <div className="movies">movies</div>
     );
-}export default movies;
+}export default Movies;
