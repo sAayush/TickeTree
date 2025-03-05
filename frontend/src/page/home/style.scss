@@ -1,0 +1,22 @@
+.home-page {
+    margin-top: -27px;
+    width: 100%;
+    height: 100%;
+    .home-page-slider{
+        height: 30rem;
+        margin: 0 auto;
+    }
+    .home-page-recommend-movies{
+        padding: 20px;
+        .home-page-recommend-movies-title{
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .home-page-recommend-movies-cards{
+            padding: 0 50px;
+
+        }
+    }
+}
+
+

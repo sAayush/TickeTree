@@ -1,0 +1,35 @@
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    height: 40rem;
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    .card-item {
+        background-color: #F5F5F5;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        .card-image {
+            img {
+                width: 10rem;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        .card-content {
+            
+            .card-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+            .card-description {
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
