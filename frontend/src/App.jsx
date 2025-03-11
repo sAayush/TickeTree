@@ -4,6 +4,7 @@ import Sports from "./page/sports";
 import Events from "./page/events";
 import Layout from "./layout/defaultLaout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ShowMovie from "./page/showmovie";
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
             <Route path="/movies" element={<Movies />} />
             <Route path="/sports" element={<Sports />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/:name/:id" element={<ShowMovie />} />
           </Route>
         </Routes>
       </Router>

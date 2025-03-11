@@ -5,21 +5,21 @@ import img2 from "/dummy/image2.avif";
 import img3 from "/dummy/image3.avif";
 import "./style.scss";
 const images = [
-  { image: img1, title: "Image 1", description: "Description 1" },
-  { image: img1, title: "Image 2", description: "Description 2" },
-  { image: img1, title: "Image 3", description: "Description 3" },
-];
+  { _id: 1, image: img1, name: "Image_2", description: "Description 2" },
+  { _id: 2, image: img1, name: "Image_1", description: "Description 1" },
+  { _id: 3, image: img1, name: "Image_3", description: "Description 3" },
+]
 const cards = [
-  { image: img3, title: "Image 1", description: "Description 1", url: "https://www.google.com" },
-  { image: img2, title: "Image 2", description: "Description 2", url: "https://www.google.com" },
-  { image: img3, title: "Image 3", description: "Description 3", url: "https://www.google.com" },
-  { image: img2, title: "Image 1", description: "Description 1", url: "https://www.google.com" },
-  { image: img3, title: "Image 2", description: "Description 2", url: "https://www.google.com" },
-  { image: img2, title: "Image 3", description: "Description 3", url: "https://www.google.com" },
-  { image: img3, title: "Image 2", description: "Description 2", url: "https://www.google.com" },
-  { image: img2, title: "Image 3", description: "Description 3", url: "https://www.google.com" },
-  { image: img3, title: "Image 2", description: "Description 2", url: "https://www.google.com" },
-  { image: img2, title: "Image 3", description: "Description 3", url: "https://www.google.com" },
+  { _id: 1, image: img3, name: "Image_1", description: "Description 1" },
+  { _id: 2, image: img2, name: "Image_2", description: "Description 2" },
+  { _id: 3, image: img3, name: "Image_3", description: "Description 3" },
+  { _id: 4, image: img2, name: "Image_1", description: "Description 1" },
+  { _id: 5, image: img3, name: "Image_2", description: "Description 2" },
+  { _id: 6, image: img2, name: "Image_3", description: "Description 3" },
+  { _id: 7, image: img3, name: "Image_2", description: "Description 2" },
+  { _id: 8, image: img2, name: "Image_3", description: "Description 3" },
+  { _id: 9, image: img3, name: "Image_2", description: "Description 2" },
+  { _id: 10, image: img2, name: "Image_3", description: "Description 3" },
 ];
 function Home() {
   return (

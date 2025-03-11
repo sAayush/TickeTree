@@ -1,0 +1,75 @@
+.showMovie-page{
+    .showMovies-page-top{
+        position: relative;
+        margin: 10px;
+        padding: 40px;
+        background: linear-gradient(90deg, rgb(65, 101, 27), 24.97%, rgb(65, 101, 27) 38.3%, rgb(129, 196, 54) 97.47%, rgb(65, 101, 27) 100%);
+        box-shadow: 0px 5px 20px 2px;
+        color: #fff;
+        border-radius: 10px;
+        .movies-share-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Ensure centered alignment */
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            background-color: transparent;
+            border: none;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+            min-width: 40px; /* Ensures button size remains constant */
+          
+            .share-alert {
+              position: absolute;
+              top: 40px; /* Position below the button */
+              right: 0; /* Align right */
+              font-size: 10px;
+              padding: 3px 6px;
+              background-color: rgb(65 101 27 / 70%);
+              border-radius: 5px;
+              white-space: nowrap; /* Prevents wrapping */
+            }
+          }
+          
+        
+        .showMovies-detail{
+            display: flex;   
+            align-items: center;
+            gap: 20px;
+            .movie-rating{
+                margin-top: 20px;
+                display: flex;
+                width: 15rem;
+                gap: 1.5rem;
+                align-items: center;
+                padding: 10px;
+                background-color:rgb(27 108 59);
+                .rate-now-button{
+                    padding: 5px;
+                    font-size: .9rem;
+                    font-weight: 600;
+                    border-radius: 5px;
+                    border: none;
+                    cursor: pointer;
+                }
+            }
+            .book-ticket-button{
+                position: absolute;
+                top :70%;
+                right: 5%;
+                // margin-top: 40px;
+                padding: 5px;
+                background-color:rgb(65 101 27 / 70%) ;
+                color: #fff;
+                border-radius: 5px;
+                border: 2px solid gainsboro;
+                cursor: pointer;
+                &:hover{
+                    background-color:rgb(65 101 27 / 50%) 
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Navigation icons
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import "./style.scss";
 
 export default function SlidingCard({ card }) {
@@ -20,31 +20,33 @@ export default function SlidingCard({ card }) {
 
 
   return (
-    <div className="slidingCard-container">
-      <button className="slidingCard-button left" onClick={goToPrevious}>
-        <FaChevronLeft />
-      </button>
-      <div
-        className="slidingCard-wrapper"
-        style={{
-          transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)`,
-        }}
-      >
-        {card.map((item, index) => (
-          <Link to={item.url} key={index} className="slidingCard-item">
-            <div className="slidingCard-image">
-              <img src={item.image} alt={item.title} />
-            </div>
-            <div className="slidingCard-content">
-              <div className="slidingCard-title">{item.title}</div>
-              <div className="slidingCard-description">{item.description}</div>
-            </div>
-          </Link>
-        ))}
+    <div className="slidingCard-page">
+        <button className="slidingCard-button left" onClick={goToPrevious}>
+          <MdKeyboardArrowLeft />
+        </button>
+      <div className="slidingCard-container">
+        <div
+          className="slidingCard-wrapper"
+          style={{
+            transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)`,
+          }}
+        >
+          {card.map((item, index) => (
+            <Link to={`http://localhost:3000/${item.name}/${item._id}`} key={index} className="slidingCard-item">
+              <div className="slidingCard-image">
+                <img src={item.image} alt={item.title} />
+              </div>
+              <div className="slidingCard-content">
+                <div className="slidingCard-title">{item.name}</div>
+                <div className="slidingCard-description">{item.description}</div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
-      <button className="slidingCard-button right" onClick={goToNext}>
-        <FaChevronRight />
-      </button>
+        <button className="slidingCard-button right" onClick={goToNext}>
+          <MdKeyboardArrowRight />
+        </button>
     </div>
   );
 }

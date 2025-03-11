@@ -55,7 +55,7 @@ function Slider({ slider }) {
           >
             <div className="slider-content">
               <div className="slider-content-bottom">
-                <h1>{slide.title}</h1>
+                <h1>{slide.name}</h1>
                 <p>{slide.description}</p>
               </div>
             </div>
