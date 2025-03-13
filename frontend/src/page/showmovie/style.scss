@@ -3,7 +3,8 @@
         position: relative;
         margin: 10px;
         padding: 40px;
-        background: linear-gradient(90deg, rgb(65, 101, 27), 24.97%, rgb(65, 101, 27) 38.3%, rgb(129, 196, 54) 97.47%, rgb(65, 101, 27) 100%);
+         background: linear-gradient(90deg, rgb(10, 2, 3) 24.97%, rgb(10, 2, 3) 38.3%, rgba(33, 25, 26, 0.784) 97.47%, rgb(10, 2, 3) 100%);
+        //background-image: linear-gradient(to right, rgb(10, 2, 3), rgba(33, 25, 26, 0.784));
         box-shadow: 0px 5px 20px 2px;
         color: #fff;
         border-radius: 10px;
@@ -27,12 +28,18 @@
               right: 0; /* Align right */
               font-size: 10px;
               padding: 3px 6px;
-              background-color: rgb(65 101 27 / 70%);
+              background-color: rgba(107, 110, 103, 0.7);
               border-radius: 5px;
               white-space: nowrap; /* Prevents wrapping */
             }
           }
-          
+          .movie-image{
+             img{
+                border: 2px solid #fff;
+                height: 50vh;
+                border-radius: 10px;
+            }
+          }
         
         .showMovies-detail{
             display: flex;   
@@ -45,7 +52,8 @@
                 gap: 1.5rem;
                 align-items: center;
                 padding: 10px;
-                background-color:rgb(27 108 59);
+                background-color:rgba(107, 110, 103, 0.7);
+                border-radius: 20px;
                 .rate-now-button{
                     padding: 5px;
                     font-size: .9rem;
@@ -61,13 +69,13 @@
                 right: 5%;
                 // margin-top: 40px;
                 padding: 5px;
-                background-color:rgb(65 101 27 / 70%) ;
+                background-color:rgba(107, 110, 103, 0.7); ;
                 color: #fff;
                 border-radius: 5px;
                 border: 2px solid gainsboro;
                 cursor: pointer;
                 &:hover{
-                    background-color:rgb(65 101 27 / 50%) 
+                    background-color:rgba(107, 110, 103, 0.5);
                 }
             }
         }

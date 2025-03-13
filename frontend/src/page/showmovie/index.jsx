@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { FaShareAlt } from "react-icons/fa";
-import img2 from "/dummy/image2.avif";
+import img2 from "/dummy/img1.jpg";
 import "./style.scss";
 import { useState } from "react";
 import Star from "../../component/star";

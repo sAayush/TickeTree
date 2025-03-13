@@ -65,6 +65,19 @@ const Navbar = () => {
             Tickettree
           </NavLink>
         </div>
+        <div className="navbar">
+        {navbar.map((item, index) => (
+          <NavLink
+            key={index}
+            to={item.link}
+            className={({ isActive }) =>
+              `${isActive ? "navLink active" : "navLink"}`
+            }
+          >
+            {item.icon} {item.name}
+          </NavLink>
+        ))}
+      </div>
         <div className="nav-search">
           <div className="nav-serach-box">
               <input type="text" placeholder="Search" />
@@ -90,19 +103,6 @@ const Navbar = () => {
           </div>
         )}
         </div>
-      </div>
-      <div className="navbar">
-        {navbar.map((item, index) => (
-          <NavLink
-            key={index}
-            to={item.link}
-            className={({ isActive }) =>
-              `${isActive ? "navLink active" : "navLink"}`
-            }
-          >
-            {item.icon} {item.name}
-          </NavLink>
-        ))}
       </div>
       {/* select popup */}
       {popUp && (

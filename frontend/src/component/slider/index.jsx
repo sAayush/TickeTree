@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaRegCaretSquareLeft, FaRegCaretSquareRight } from "react-icons/fa";
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 function Slider({ slider }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -8,18 +9,18 @@ function Slider({ slider }) {
 
   const goToPrevious = () => {
     setFade(true);
-      setCurrentIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : slider.length - 1
-      );
-      setFade(false); 
+    setCurrentIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : slider.length - 1
+    );
+    setFade(false);
   };
 
   const goToNext = () => {
     setFade(true);
-      setCurrentIndex((prevIndex) =>
-        prevIndex < slider.length - 1 ? prevIndex + 1 : 0
-      );
-      setFade(false);
+    setCurrentIndex((prevIndex) =>
+      prevIndex < slider.length - 1 ? prevIndex + 1 : 0
+    );
+    setFade(false);
   };
 
   // Auto slide effect
@@ -48,18 +49,19 @@ function Slider({ slider }) {
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {slider.map((slide, index) => (
-          <div
+          <Link to={`http://localhost:3000/${slide.name}/${slide._id}`}
             key={index}
-            className="slider-container"
-            style={{ backgroundImage: `url(${slide.image})` }}
-          >
+            className="slider-container" >
+            <div className="slide-background-image">
+              <img src={slide.image}/>
+            </div>
             <div className="slider-content">
               <div className="slider-content-bottom">
                 <h1>{slide.name}</h1>
                 <p>{slide.description}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
