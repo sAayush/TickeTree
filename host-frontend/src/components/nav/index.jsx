@@ -3,7 +3,11 @@ import logo from "/logo.png";
 import { IoLogOut } from "react-icons/io5";
 import './style.scss'
 
-export default function Navbar({ onLogout }) {
+export default function Navbar() {
+    const onLogout = () =>{
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+    }
     return (
         <div className="nav-component">
             <NavLink to="/" className="logo">

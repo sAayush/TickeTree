@@ -1,5 +1,32 @@
 .nav-component{
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 10px ;
     display: flex;
     justify-content: space-between;
-    background-color: #017246;
+    background-color: #338967;
+    .logo{
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+        img{
+            width: 40px;
+        }
+    }
+    .logout-button{
+        display: flex;
+        align-items: center;
+        font-size: .9rem;
+        gap: 2px;
+        color: #fff;
+        cursor: pointer;
+        .nav-icon{
+            font-size: 1.4rem;
+        }
+    }
 }

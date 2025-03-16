@@ -1,0 +1,18 @@
+.dashboard-page{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 80px;
+    justify-content: center;
+    .dashboard-page-cards   {
+        display: flex;
+        align-items: center;
+        font-size: 2.5rem;
+        color: #017246;
+        text-decoration: none;
+        background-color: #D9D9D9;
+        font-weight: bold;
+        padding: 5rem;
+        border-radius: 30px;
+        box-shadow: 0px 5px 10px 0px black;
+    }
+}

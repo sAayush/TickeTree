@@ -6,8 +6,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout children={<DashBoard/>} />}>
-        </Route>
+        <Route path="/" element={<Layout children={<DashBoard/>} />}/>
       </Routes>
     </Router>
   )
