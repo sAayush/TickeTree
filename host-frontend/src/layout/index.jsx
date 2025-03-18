@@ -4,7 +4,7 @@ export default function Layout({children}){
     return(
         <>
             <Navbar/>
-            <div style={{marginTop:"20px"}}>
+            <div style={{margin:"30px"}}>
                 {children}
             </div>
         </>
