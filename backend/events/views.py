@@ -12,6 +12,7 @@ from .serializers import (
     EventCreateSerializer
 )
 from accounts.models import HostProfile
+from utils.utils import create_response  # Import your response utility
 
 # Create your views here.
 
@@ -37,23 +38,60 @@ class EventViewSet(viewsets.ModelViewSet):
         host_profile = HostProfile.objects.get(user=self.request.user)
         serializer.save(host=host_profile)
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return create_response(
+            status="success",
+            message="Events retrieved successfully",
+            data=serializer.data,
+            status_code=status.HTTP_200_OK
+        )
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return create_response(
+                status="success",
+                message="Event created successfully",
+                data=serializer.data,
+                status_code=status.HTTP_201_CREATED
+            )
+        return create_response(
+            status="error",
+            message=serializer.errors,
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
+
     @action(detail=False, methods=['get'])
     def featured(self, request):
         featured_events = Event.objects.filter(is_featured=True)
         serializer = self.get_serializer(featured_events, many=True)
-        return Response(serializer.data)
+        return create_response(
+            status="success",
+            message="Featured events retrieved successfully",
+            data=serializer.data,
+            status_code=status.HTTP_200_OK
+        )
 
     @action(detail=False, methods=['get'])
     def my_events(self, request):
         if not request.user.is_authenticated or request.user.user_type != 'HOST':
-            return Response(
-                {"error": "Not authorized"}, 
-                status=status.HTTP_403_FORBIDDEN
+            return create_response(
+                status="error",
+                message="Not authorized",
+                status_code=status.HTTP_403_FORBIDDEN
             )
         host_profile = HostProfile.objects.get(user=request.user)
         events = Event.objects.filter(host=host_profile)
         serializer = self.get_serializer(events, many=True)
-        return Response(serializer.data)
+        return create_response(
+            status="success",
+            message="My events retrieved successfully",
+            data=serializer.data,
+            status_code=status.HTTP_200_OK
+        )
 
 class ShowViewSet(viewsets.ModelViewSet):
     queryset = Show.objects.all()

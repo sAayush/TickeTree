@@ -7,7 +7,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-CORS_ALLOW_ALL_ORIGINS = True  # Only for development! Change this in production
+CORS_ALLOW_ALL_ORIGINS = True  # Only for development
 
 # For production, use this instead:
 CORS_ALLOWED_ORIGINS = [
@@ -56,18 +56,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
-
-INSTALLED_APPS += [
+    
+    # Third party apps
     'rest_framework',
-    'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
-    'django_filters',
-    'tickets',
+    
+    # Your apps
     'accounts',
     'events',
-    'movies',
 ]
 
 MIDDLEWARE = [
@@ -105,21 +102,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
-    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'AUTH_HEADER_TYPES': ('Bearer',),
 }
-
 
 TEMPLATES = [
     {
@@ -176,3 +167,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
