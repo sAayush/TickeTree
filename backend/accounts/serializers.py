@@ -24,7 +24,7 @@ class HostProfileSerializer(serializers.ModelSerializer):
         fields = ('organization_name', 'address', 'contact_number', 'website', 'description')
 
 class HostUserSerializer(serializers.ModelSerializer):
-    host_profile = HostProfileSerializer()
+    host_profile = HostProfileSerializer(read_only=True)
     
     class Meta:
         model = User
@@ -40,3 +40,9 @@ class RegisterHostSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
+
+    def create(self, validated_data):
+        host_profile_data = validated_data.pop('host_profile')
+        user = User.objects.create_user(**validated_data, user_type='HOST')
+        HostProfile.objects.create(user=user, **host_profile_data)
+        return user

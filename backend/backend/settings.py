@@ -65,6 +65,9 @@ INSTALLED_APPS = [
     # Your apps
     'accounts',
     'events',
+    'movies',
+    'tickets',
+    
 ]
 
 MIDDLEWARE = [
