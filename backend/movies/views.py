@@ -1,16 +1,19 @@
 from django.shortcuts import render
-from rest_framework import generics, status, filters
+from rest_framework import generics, status, filters, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Movie, Genre, Language, Person, MovieCast, MovieCrew
+from django.utils import timezone
+from .models import Movie, Genre, Language, Person, MovieCast, MovieCrew, Show
 from .serializers import (
     MovieSerializer, MovieListSerializer, GenreSerializer,
     LanguageSerializer, PersonSerializer, MovieCastSerializer,
-    MovieCrewSerializer
+    MovieCrewSerializer, ShowSerializer
 )
 from utils.utils import create_response
+from rest_framework.decorators import action
+
 # Movie Views
 class MovieListCreateView(generics.ListCreateAPIView):
     queryset = Movie.objects.all()
@@ -136,21 +139,62 @@ class MovieCrewView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(movie_id=self.kwargs['movie_id'])
 
-# Utility Views
-class CertificationListView(APIView):
-    def get(self, request):
-        certifications = dict(Movie.CERTIFICATION_CHOICES)
-        return create_response(
-            status="success",
-            message="Certifications retrieved successfully",
-            data=certifications
+# Show Views
+class ShowViewSet(viewsets.ModelViewSet):
+    queryset = Show.objects.all()
+    serializer_class = ShowSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = self.queryset
+        movie_id = self.request.query_params.get('movie_id', None)
+        if movie_id:
+            queryset = queryset.filter(movie_id=movie_id)
+        return queryset.filter(show_date__gte=timezone.now().date())
+
+    @action(detail=True, methods=['post'])
+    def book_tickets(self, request, pk=None):
+        show = self.get_object()
+        quantity = request.data.get('quantity', 1)
+        
+        if not show.is_available():
+            return Response(
+                {'error': 'Show is not available for booking'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if show.available_seats < quantity:
+            return Response(
+                {'error': f'Only {show.available_seats} seats available'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if show.update_available_seats(quantity):
+            return Response({
+                'message': f'Successfully booked {quantity} tickets',
+                'show_id': show.id,
+                'available_seats': show.available_seats
+            })
+        
+        return Response(
+            {'error': 'Failed to book tickets'},
+            status=status.HTTP_400_BAD_REQUEST
         )
 
-class MovieStatusListView(APIView):
-    def get(self, request):
-        statuses = dict(Movie.STATUS_CHOICES)
-        return create_response(
-            status="success",
-            message="Movie statuses retrieved successfully",
-            data=statuses
-        )
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        status = self.request.query_params.get('status', None)
+        if status:
+            queryset = queryset.filter(status=status)
+        return queryset
+
+    @action(detail=True, methods=['get'])
+    def shows(self, request, pk=None):
+        movie = self.get_object()
+        shows = movie.shows.filter(show_date__gte=timezone.now().date())
+        serializer = ShowSerializer(shows, many=True)
+        return Response(serializer.data)

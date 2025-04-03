@@ -1,20 +1,21 @@
-from django.urls import path
-from .views import *
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import (
+    MovieViewSet, GenreViewSet, LanguageViewSet,
+    PersonViewSet, MovieCastViewSet, MovieCrewViewSet,
+    ReviewViewSet, ShowViewSet
+)
+
+router = DefaultRouter()
+router.register(r'movies', MovieViewSet, basename='movie')
+router.register(r'genres', GenreViewSet, basename='genre')
+router.register(r'languages', LanguageViewSet, basename='language')
+router.register(r'persons', PersonViewSet, basename='person')
+router.register(r'cast', MovieCastViewSet, basename='cast')
+router.register(r'crew', MovieCrewViewSet, basename='crew')
+router.register(r'reviews', ReviewViewSet, basename='review')
+router.register(r'shows', ShowViewSet, basename='show')
 
 urlpatterns = [
-    # Movie URLs
-    path('movies/', MovieListCreateView.as_view(), name='movie-list-create'),
-    path('movies/<int:pk>/', MovieDetailView.as_view(), name='movie-detail'),
-    
-    # Genre and Language URLs
-    path('genres/', GenreListView.as_view(), name='genre-list'),
-    path('languages/', LanguageListView.as_view(), name='language-list'),
-    
-    # Cast and Crew URLs
-    path('movies/<int:movie_id>/cast/', MovieCastView.as_view(), name='movie-cast'),
-    path('movies/<int:movie_id>/crew/', MovieCrewView.as_view(), name='movie-crew'),
-    
-    # Utility URLs
-    path('certifications/', CertificationListView.as_view(), name='certification-list'),
-    path('movie-statuses/', MovieStatusListView.as_view(), name='movie-status-list'),
+    path('', include(router.urls)),
 ]

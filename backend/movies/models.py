@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 class Genre(models.Model):
     name = models.CharField(max_length=100)
@@ -24,19 +25,6 @@ class Person(models.Model):
         return self.name
 
 class Movie(models.Model):
-    CERTIFICATION_CHOICES = [
-        ('U', 'Universal'),
-        ('UA', 'Universal with Adult Supervision'),
-        ('A', 'Adult'),
-        ('S', 'Special Category')
-    ]
-    
-    STATUS_CHOICES = [
-        ('upcoming', 'Upcoming'),
-        ('running', 'Now Running'),
-        ('finished', 'Finished')
-    ]
-
     # Basic Information
     title = models.CharField(max_length=255)
     original_title = models.CharField(max_length=255, blank=True)
@@ -48,8 +36,8 @@ class Movie(models.Model):
     # Classifications
     genres = models.ManyToManyField(Genre)
     languages = models.ManyToManyField(Language)
-    certification = models.CharField(max_length=2, choices=CERTIFICATION_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='upcoming')
+    certification = models.CharField(max_length=50)  # U, UA, A, S
+    status = models.CharField(max_length=50)  # upcoming, running, finished
     
     # Media
     poster = models.ImageField(upload_to='movie_posters/')
@@ -93,26 +81,16 @@ class MovieCast(models.Model):
         return f"{self.person.name} as {self.character_name} in {self.movie.title}"
 
 class MovieCrew(models.Model):
-    ROLE_CHOICES = [
-        ('director', 'Director'),
-        ('producer', 'Producer'),
-        ('writer', 'Writer'),
-        ('music_director', 'Music Director'),
-        ('cinematographer', 'Cinematographer'),
-        ('editor', 'Editor'),
-        ('other', 'Other')
-    ]
-
     movie = models.ForeignKey(Movie, related_name='crew', on_delete=models.CASCADE)
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
-    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    role = models.CharField(max_length=50)  # director, producer, writer, etc.
     specific_role = models.CharField(max_length=255, blank=True)  # For 'other' roles
 
     class Meta:
         unique_together = ['movie', 'person', 'role']
 
     def __str__(self):
-        return f"{self.person.name} as {self.get_role_display()} in {self.movie.title}"
+        return f"{self.person.name} as {self.role} in {self.movie.title}"
 
 class Review(models.Model):
     movie = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
@@ -127,3 +105,43 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.movie.title} by {self.user.email}"
+
+class Show(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='shows')
+    show_date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    total_seats = models.PositiveIntegerField()
+    available_seats = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=50)  # upcoming, running, cancelled, finished
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['show_date', 'start_time']
+        unique_together = ['movie', 'show_date', 'start_time']
+
+    def __str__(self):
+        return f"{self.movie.title} - {self.show_date} {self.start_time}"
+
+    def save(self, *args, **kwargs):
+        if not self.available_seats:
+            self.available_seats = self.total_seats
+        super().save(*args, **kwargs)
+
+    def is_available(self):
+        return (
+            self.status == 'upcoming' and 
+            self.available_seats > 0 and
+            timezone.now() < timezone.make_aware(
+                timezone.datetime.combine(self.show_date, self.start_time)
+            )
+        )
+
+    def update_available_seats(self, quantity):
+        if self.available_seats >= quantity:
+            self.available_seats -= quantity
+            self.save()
+            return True
+        return False

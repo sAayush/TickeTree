@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Genre, Language, Person, MovieCast, MovieCrew, Review
+from .models import Movie, Genre, Language, Person, MovieCast, MovieCrew, Review, Show
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,11 +27,10 @@ class MovieCastSerializer(serializers.ModelSerializer):
 class MovieCrewSerializer(serializers.ModelSerializer):
     person = PersonSerializer(read_only=True)
     person_id = serializers.IntegerField(write_only=True)
-    role_display = serializers.CharField(source='get_role_display', read_only=True)
 
     class Meta:
         model = MovieCrew
-        fields = ['id', 'person', 'person_id', 'role', 'role_display', 'specific_role']
+        fields = ['id', 'person', 'person_id', 'role', 'specific_role']
 
 class ReviewSerializer(serializers.ModelSerializer):
     user_email = serializers.EmailField(source='user.email', read_only=True)
@@ -41,14 +40,30 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_email', 'rating', 'comment', 'created_at', 'updated_at']
         read_only_fields = ['user']
 
+class ShowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Show
+        fields = [
+            'id', 'movie', 'show_date', 'start_time', 'end_time',
+            'total_seats', 'available_seats', 'price', 'status',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def validate(self, data):
+        if data['end_time'] <= data['start_time']:
+            raise serializers.ValidationError("End time must be after start time")
+        if data['available_seats'] > data['total_seats']:
+            raise serializers.ValidationError("Available seats cannot be more than total seats")
+        return data
+
 class MovieSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     languages = LanguageSerializer(many=True, read_only=True)
     cast = MovieCastSerializer(many=True, read_only=True)
     crew = MovieCrewSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
-    certification_display = serializers.CharField(source='get_certification_display', read_only=True)
-    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    shows = ShowSerializer(many=True, read_only=True)
     
     # Write-only fields for managing relationships
     genre_ids = serializers.ListField(
@@ -68,11 +83,12 @@ class MovieSerializer(serializers.ModelSerializer):
             'id', 'title', 'original_title', 'tagline', 'description',
             'duration', 'release_date', 'genres', 'genre_ids',
             'languages', 'language_ids', 'certification',
-            'certification_display', 'status', 'status_display',
-            'poster', 'banner', 'trailer_url', 'rating', 'vote_count',
-            'budget', 'box_office', 'is_featured', 'cast', 'crew',
-            'reviews', 'created_at', 'updated_at'
+            'status', 'poster', 'banner', 'trailer_url',
+            'rating', 'vote_count', 'budget', 'box_office',
+            'is_featured', 'cast', 'crew', 'reviews', 'shows',
+            'created_at', 'updated_at'
         ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
     def create(self, validated_data):
         genre_ids = validated_data.pop('genre_ids', [])

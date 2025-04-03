@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('accounts.urls')),  # Auth related endpoints
     path('api/movies/', include('movies.urls')),  # Movie related endpoints
+    path('api/events/', include('events.urls')),
 
     # Swagger URLs
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
