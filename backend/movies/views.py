@@ -88,18 +88,22 @@ class LanguageViewSet(viewsets.ModelViewSet):
 # Cast and Crew Management Views
 class MovieCastViewSet(viewsets.ModelViewSet):
     serializer_class = MovieCastSerializer
-
+    
     def get_queryset(self):
-        return MovieCast.objects.filter(movie_id=self.kwargs['movie_id'])
+        if getattr(self, 'swagger_fake_view', False):  # Add this check for Swagger
+            return MovieCast.objects.none()
+        return MovieCast.objects.filter(movie_id=self.kwargs.get('movie_id'))
 
     def perform_create(self, serializer):
         serializer.save(movie_id=self.kwargs['movie_id'])
 
 class MovieCrewViewSet(viewsets.ModelViewSet):
     serializer_class = MovieCrewSerializer
-
+    
     def get_queryset(self):
-        return MovieCrew.objects.filter(movie_id=self.kwargs['movie_id'])
+        if getattr(self, 'swagger_fake_view', False):  # Add this check for Swagger
+            return MovieCrew.objects.none()
+        return MovieCrew.objects.filter(movie_id=self.kwargs.get('movie_id'))
 
     def perform_create(self, serializer):
         serializer.save(movie_id=self.kwargs['movie_id'])

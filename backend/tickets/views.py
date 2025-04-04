@@ -20,6 +20,8 @@ class TicketViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):  # Add this check for Swagger
+            return Ticket.objects.none()
         return Ticket.objects.filter(user=self.request.user)
 
     @action(detail=False, methods=['post'])
@@ -283,10 +285,12 @@ class TicketViewSet(viewsets.ModelViewSet):
             }
         )
 
-class TicketTransactionViewSet(viewsets.ReadOnlyModelViewSet):
+class TicketTransactionViewSet(viewsets.ModelViewSet):
     queryset = TicketTransaction.objects.all()
     serializer_class = TicketTransactionSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):  # Add this check for Swagger
+            return TicketTransaction.objects.none()
         return self.queryset.filter(ticket__user=self.request.user)

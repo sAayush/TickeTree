@@ -11,14 +11,16 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('user_type',)
 
 class RegisterUserSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(required=True)
-    last_name = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=True, help_text="User's first name")
+    last_name = serializers.CharField(required=True, help_text="User's last name")
     
     class Meta:
         model = User
         fields = ('email', 'username', 'password', 'first_name', 'last_name')
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'email': {'help_text': "User's email address"},
+            'username': {'help_text': "User's username"}
         }
 
 class HostProfileSerializer(serializers.ModelSerializer):

@@ -8,8 +8,11 @@ from django.utils import timezone
 class TicketTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TicketTransaction
-        fields = ['id', 'ticket', 'transaction_type', 'amount', 'blockchain_transaction_hash', 'created_at']
-        read_only_fields = ['blockchain_transaction_hash', 'created_at']
+        fields = [
+            'id', 'ticket', 'transaction_type', 'amount',
+            'blockchain_transaction_hash', 'created_at'
+        ]
+        read_only_fields = ['created_at']
 
 class TicketSerializer(serializers.ModelSerializer):
     movie = MovieSerializer(read_only=True)
@@ -20,16 +23,16 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = [
-            'id', 'user', 'ticket_type', 'status', 'movie', 'event', 'show',
-            'seat_number', 'price', 'quantity', 'blockchain_ticket_id',
-            'blockchain_transaction_hash', 'created_at', 'updated_at',
-            'used_at', 'cancelled_at', 'transactions', 'qr_code', 'qr_data',
-            'transfer_history'
+            'id', 'user', 'show', 'seat_number', 'price',
+            'token_id', 'transaction_hash', 'is_used',
+            'created_at', 'updated_at', 'movie', 'event',
+            'ticket_type', 'status', 'quantity',
+            'transactions'
         ]
         read_only_fields = [
-            'id', 'user', 'blockchain_ticket_id', 'blockchain_transaction_hash',
-            'created_at', 'updated_at', 'used_at', 'cancelled_at', 'transactions',
-            'qr_code', 'qr_data', 'transfer_history'
+            'user', 'token_id', 'transaction_hash', 
+            'is_used', 'created_at', 'updated_at',
+            'movie', 'event', 'transactions'
         ]
 
     def validate(self, data):
@@ -59,8 +62,11 @@ class TicketPurchaseSerializer(serializers.Serializer):
 
 class TicketBookingSerializer(serializers.Serializer):
     show_id = serializers.IntegerField()
-    seat_numbers = serializers.ListField(child=serializers.IntegerField())
-    user_wallet_address = serializers.CharField(max_length=42)
+    seat_numbers = serializers.ListField(
+        child=serializers.IntegerField(),
+        min_length=1
+    )
+    user_wallet_address = serializers.CharField()
 
     def validate(self, data):
         show = Show.objects.filter(id=data['show_id']).first()
@@ -81,15 +87,14 @@ class TicketBookingSerializer(serializers.Serializer):
         return data
 
 class TicketVerificationSerializer(serializers.Serializer):
-    token_id = serializers.CharField()
-    user_wallet_address = serializers.CharField(max_length=42)
+    user_wallet_address = serializers.CharField()
 
 class QRCodeVerificationSerializer(serializers.Serializer):
     qr_data = serializers.CharField()
 
 class TicketTransferSerializer(serializers.Serializer):
     ticket_id = serializers.IntegerField()
-    new_owner_wallet_address = serializers.CharField(max_length=42)
+    new_owner_wallet_address = serializers.CharField()
 
     def validate(self, data):
         try:

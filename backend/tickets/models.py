@@ -23,8 +23,8 @@ class Ticket(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     
     # Blockchain Integration
-    token_id = models.CharField(max_length=100, unique=True)
-    transaction_hash = models.CharField(max_length=100)
+    token_id = models.CharField(max_length=100)  # For blockchain token ID
+    transaction_hash = models.CharField(max_length=100)  # For blockchain transaction hash
     is_used = models.BooleanField(default=False)
     
     # Timestamps
@@ -34,8 +34,8 @@ class Ticket(models.Model):
     cancelled_at = models.DateTimeField(null=True, blank=True)
     
     # QR Code
-    qr_code = models.TextField(null=True, blank=True)  # Store base64 QR code
-    qr_data = models.TextField(null=True, blank=True)  # Store QR code data
+    qr_code = models.TextField(null=True, blank=True)  # For storing QR code data
+    qr_data = models.JSONField(null=True, blank=True)  # For storing QR code related data
     transfer_history = models.JSONField(default=list, blank=True)  # Store transfer history
 
     class Meta:
@@ -129,11 +129,17 @@ class Ticket(models.Model):
         return True, "Ticket transferred successfully"
 
 class TicketTransaction(models.Model):
+    TRANSACTION_TYPES = [
+        ('purchase', 'Purchase'),
+        ('transfer', 'Transfer'),
+        ('refund', 'Refund')
+    ]
+
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='transactions')
-    transaction_type = models.CharField(max_length=50)  # Can be 'purchase', 'refund', 'cancellation'
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    blockchain_transaction_hash = models.CharField(max_length=100, null=True, blank=True)
+    blockchain_transaction_hash = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.transaction_type} - {self.ticket} - {self.amount}"
+        return f"{self.transaction_type} - Ticket {self.ticket.id}"

@@ -43,12 +43,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 class ShowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Show
-        fields = [
-            'id', 'movie', 'show_date', 'start_time', 'end_time',
-            'total_seats', 'available_seats', 'price', 'status',
-            'created_at', 'updated_at'
-        ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        fields = '__all__'
+        ref_name = 'MovieShow'
 
     def validate(self, data):
         if data['end_time'] <= data['start_time']:

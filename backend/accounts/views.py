@@ -8,11 +8,29 @@ from utils.utils import create_login_response, create_response
 from .serializers import UserSerializer, RegisterUserSerializer, HostUserSerializer, RegisterHostSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 User = get_user_model()
 
 class LoginUserView(TokenObtainPairView):
+    @swagger_auto_schema(
+        operation_description="Login for regular users",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['email', 'password'],
+            properties={
+                'email': openapi.Schema(type=openapi.TYPE_STRING),
+                'password': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
+        responses={
+            200: openapi.Response('Login successful'),
+            401: 'Invalid credentials',
+            403: 'Not a regular user account'
+        }
+    )
     def post(self, request, *args, **kwargs):
         try: 
             response = super().post(request, *args, **kwargs)
@@ -71,11 +89,19 @@ class RefreshTokenView(TokenRefreshView):
 class RegisterUserView(APIView):
     serializer_class = RegisterUserSerializer
     parser_classes = (JSONParser,)
-    permission_classes = []  # Add this to remove authentication requirement
+    permission_classes = []
 
-    def get_serializer(self):
-        return self.serializer_class()
-
+    @swagger_auto_schema(
+        request_body=RegisterUserSerializer,
+        responses={
+            201: openapi.Response(
+                description="User registered successfully",
+                schema=UserSerializer
+            ),
+            400: "Bad Request"
+        },
+        operation_description="Register a new user"
+    )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():

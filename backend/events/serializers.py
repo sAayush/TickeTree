@@ -11,6 +11,7 @@ class ShowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Show
         fields = '__all__'
+        ref_name = 'EventShow'
 
 class EventSerializer(serializers.ModelSerializer):
     shows = ShowSerializer(many=True, read_only=True)
