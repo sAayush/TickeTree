@@ -71,6 +71,7 @@ class RefreshTokenView(TokenRefreshView):
 class RegisterUserView(APIView):
     serializer_class = RegisterUserSerializer
     parser_classes = (JSONParser,)
+    permission_classes = []  # Add this to remove authentication requirement
 
     def get_serializer(self):
         return self.serializer_class()
@@ -79,12 +80,14 @@ class RegisterUserView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             try:
-                # Create user with explicit USER type
+                # Create user with explicit USER type and additional fields
                 user = User.objects.create_user(
                     email=serializer.validated_data['email'],
                     username=serializer.validated_data['username'],
                     password=serializer.validated_data['password'],
-                    user_type='USER'  # Explicitly set as USER
+                    first_name=serializer.validated_data['first_name'],
+                    last_name=serializer.validated_data['last_name'],
+                    user_type='USER'
                 )
                 
                 # Generate tokens manually
@@ -124,8 +127,9 @@ class UserDetailView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 class RegisterHostView(APIView):
-    serializer_class = RegisterHostSerializer  # Updated to use new serializer
+    serializer_class = RegisterHostSerializer
     parser_classes = (JSONParser,)
+    permission_classes = []  # Add this to remove authentication requirement
 
     def get_serializer(self):
         return self.serializer_class()
